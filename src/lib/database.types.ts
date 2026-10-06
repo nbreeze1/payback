@@ -39,7 +39,7 @@ export type Database = {
     Tables: {
       charges: {
         Row: Charge;
-        Insert: Insert<Omit<Charge, "notes">> & { notes?: string | null };
+        Insert: Insert<Omit<Charge, "notes" | "charged_on">> & { notes?: string | null; charged_on?: string };
         Update: Partial<Charge>;
         Relationships: [];
       };

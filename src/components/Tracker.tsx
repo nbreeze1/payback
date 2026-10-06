@@ -107,7 +107,7 @@ export default function Tracker({ charges, payments }: Props) {
             rows={charges.map((c) => ({
               id: c.id,
               title: c.title,
-              sub: `${CATEGORIES[c.category]} · ${fmtDate(c.charged_on)}`,
+              sub: CATEGORIES[c.category],
               notes: c.notes,
               amount: `+${fmt(Number(c.amount))}`,
               tone: "neutral" as const,
@@ -147,7 +147,6 @@ function AddCharge({ onDone }: { onDone: () => void }) {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<Category>("school");
   const [amount, setAmount] = useState("");
-  const [date, setDate] = useState(today);
   const [notes, setNotes] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -158,7 +157,7 @@ function AddCharge({ onDone }: { onDone: () => void }) {
     setError(null);
     const { error } = await createClient()
       .from("charges")
-      .insert({ title: title.trim(), category, amount: Number(amount), charged_on: date, notes: notes.trim() || null });
+      .insert({ title: title.trim(), category, amount: Number(amount), notes: notes.trim() || null });
     setBusy(false);
     if (error) return setError(error.message);
     setTitle("");
@@ -179,7 +178,6 @@ function AddCharge({ onDone }: { onDone: () => void }) {
         </select>
         <MoneyInput value={amount} onChange={setAmount} />
       </div>
-      <input className="field" type="date" required value={date} onChange={(e) => setDate(e.target.value)} />
       <input className="field" placeholder="Notes (optional)" value={notes} onChange={(e) => setNotes(e.target.value)} />
       {error && <p className="text-sm text-[var(--danger)]">{error}</p>}
       <button className="btn btn-primary w-full" disabled={busy}>{busy ? "Saving…" : "Add charge"}</button>
