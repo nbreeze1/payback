@@ -11,9 +11,9 @@ const fmtDate = (d: string) =>
   new Date(d + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 const today = () => new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD in local time
 
-type Props = { email: string; charges: Charge[]; payments: Payment[] };
+type Props = { charges: Charge[]; payments: Payment[] };
 
-export default function Tracker({ email, charges, payments }: Props) {
+export default function Tracker({ charges, payments }: Props) {
   const router = useRouter();
   const [tab, setTab] = useState<"charges" | "payments">("charges");
 
@@ -27,22 +27,12 @@ export default function Tracker({ email, charges, payments }: Props) {
     return { owed, paid, remaining: owed - paid, pct: owed > 0 ? Math.min(100, (paid / owed) * 100) : 0, byCategory };
   }, [charges, payments]);
 
-  async function signOut() {
-    await createClient().auth.signOut();
-    router.replace("/login");
-    router.refresh();
-  }
-
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8 sm:py-12">
       <header className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Payback</h1>
           <p className="muted text-sm">Paying back Mom &amp; Dad</p>
-        </div>
-        <div className="flex items-center gap-3 text-sm">
-          <span className="muted hidden sm:inline">{email}</span>
-          <button onClick={signOut} className="btn btn-ghost">Sign out</button>
         </div>
       </header>
 

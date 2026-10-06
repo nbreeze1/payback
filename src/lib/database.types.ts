@@ -12,7 +12,7 @@ export type Category = keyof typeof CATEGORIES;
 
 export type Charge = {
   id: string;
-  user_id: string;
+  user_id: string | null;
   title: string;
   category: Category;
   amount: number;
@@ -23,7 +23,7 @@ export type Charge = {
 
 export type Payment = {
   id: string;
-  user_id: string;
+  user_id: string | null;
   amount: number;
   paid_on: string;
   method: string | null;
@@ -32,7 +32,7 @@ export type Payment = {
 };
 
 type Insert<T> = Omit<T, "id" | "user_id" | "created_at"> &
-  Partial<Pick<T & { id: string; user_id: string; created_at: string }, "id" | "user_id" | "created_at">>;
+  Partial<Pick<T & { id: string; user_id: string | null; created_at: string }, "id" | "user_id" | "created_at">>;
 
 export type Database = {
   public: {

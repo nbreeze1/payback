@@ -13,6 +13,5 @@ Tracks money owed to my parents (school, credit cards, flights, phone bills, oth
 - `charges` — title, category (`school | credit_card | flight | phone | other`), amount, date, notes
 - `payments` — amount, date, method, notes
 
-Both tables use row-level security, so each user only sees their own rows. Totals are calculated in `src/components/Tracker.tsx`.
+No login: it is a shared family ledger, and anyone with the link can view, add and delete entries (open RLS policies for anon). Totals are calculated in `src/components/Tracker.tsx`.
 
-> Next.js 16 note: middleware is now `src/proxy.ts` (exported function `proxy`).
