@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { CATEGORIES, type Category, type Charge, type Payment } from "@/lib/database.types";
+import { groupCharges } from "@/lib/groupCharges";
+import MoneyPie from "@/components/MoneyPie";
 
 const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 const fmt = (n: number) => money.format(n);
@@ -20,12 +22,9 @@ export default function Tracker({ charges, payments }: Props) {
   const totals = useMemo(() => {
     const owed = charges.reduce((s, c) => s + Number(c.amount), 0);
     const paid = payments.reduce((s, p) => s + Number(p.amount), 0);
-    const byCategory = Object.keys(CATEGORIES).map((key) => ({
-      key: key as Category,
-      total: charges.filter((c) => c.category === key).reduce((s, c) => s + Number(c.amount), 0),
-    }));
-    return { owed, paid, remaining: owed - paid, pct: owed > 0 ? Math.min(100, (paid / owed) * 100) : 0, byCategory };
+    return { owed, paid, remaining: owed - paid, pct: owed > 0 ? Math.min(100, (paid / owed) * 100) : 0 };
   }, [charges, payments]);
+  const slices = useMemo(() => groupCharges(charges), [charges]);
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8 sm:py-12">
@@ -57,26 +56,13 @@ export default function Tracker({ charges, payments }: Props) {
         </div>
       </section>
 
-      {/* Category breakdown */}
+      {/* Where the money went */}
       {totals.owed > 0 && (
         <section className="card mt-4 p-6">
-          <h2 className="font-semibold">Where it came from</h2>
-          <ul className="mt-4 space-y-3">
-            {totals.byCategory
-              .filter((c) => c.total > 0)
-              .sort((a, b) => b.total - a.total)
-              .map((c) => (
-                <li key={c.key}>
-                  <div className="flex justify-between text-sm">
-                    <span>{CATEGORIES[c.key]}</span>
-                    <span className="tabular-nums">{fmt(c.total)}</span>
-                  </div>
-                  <div className="mt-1 h-2 overflow-hidden rounded-full bg-[var(--subtle)]">
-                    <div className="h-full rounded-full bg-[var(--accent)]" style={{ width: `${(c.total / totals.owed) * 100}%` }} />
-                  </div>
-                </li>
-              ))}
-          </ul>
+          <h2 className="font-semibold">Where the money went</h2>
+          <div className="mt-5">
+            <MoneyPie slices={slices} owed={totals.owed} paid={totals.paid} fmt={fmt} />
+          </div>
         </section>
       )}
 

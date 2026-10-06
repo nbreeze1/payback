@@ -10,6 +10,13 @@
   --accent: #4f6bed;
   --good: #1f9d63;
   --danger: #d6453d;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #4a3aa7;
+  --series-7: #e34948;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,6 +30,13 @@
     --accent: #7d93ff;
     --good: #3ccf8a;
     --danger: #ff6b62;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #9085e9;
+    --series-7: #e66767;
   }
 }
 
