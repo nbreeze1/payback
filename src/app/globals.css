@@ -1,8 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f5f2;
+  --surface: #ffffff;
+  --subtle: #efede8;
+  --border: #e4e1da;
+  --foreground: #1c1b19;
+  --muted: #6f6b63;
+  --accent: #4f6bed;
+  --good: #1f9d63;
+  --danger: #d6453d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #121211;
+    --surface: #1c1c1a;
+    --subtle: #262624;
+    --border: #2f2f2c;
+    --foreground: #f1efea;
+    --muted: #a19d94;
+    --accent: #7d93ff;
+    --good: #3ccf8a;
+    --danger: #ff6b62;
+  }
 }
 
 @theme inline {
@@ -12,15 +33,60 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+@layer components {
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+  }
+  .muted {
+    color: var(--muted);
+  }
+  .field {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.6rem;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .field:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+  .btn {
+    border-radius: 0.6rem;
+    padding: 0.55rem 1rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: opacity 0.15s, background 0.15s;
+    cursor: pointer;
+  }
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+  .btn-primary {
+    background: var(--foreground);
+    color: var(--background);
+  }
+  .btn-good {
+    background: var(--good);
+    color: #fff;
+  }
+  .btn-ghost {
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover {
+    background: var(--subtle);
+  }
 }
