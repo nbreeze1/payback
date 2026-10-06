@@ -253,7 +253,7 @@ function HistoryList({ rows, table, empty, onDone }: { rows: Row[]; table: "char
           </div>
           <div className="flex shrink-0 items-center gap-2">
             <span className={`font-semibold tabular-nums ${r.tone === "good" ? "text-[var(--good)]" : ""}`}>{r.amount}</span>
-            <button onClick={() => remove(r.id)} className="muted rounded-md px-2 py-1 text-sm hover:text-[var(--danger)]" aria-label="Delete">
+            <button onClick={() => remove(r.id)} className="muted -mr-2 flex h-11 w-11 items-center justify-center rounded-md text-sm hover:text-[var(--danger)]" aria-label="Delete">
               ✕
             </button>
           </div>
